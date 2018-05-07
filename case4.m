@@ -60,29 +60,31 @@ for i = 1:512
 end
 
 % IR lampesignal
-M_S_IR_filtreret = 280;                           % filterkoefficienter
+M_S_IR_filtreret = 300;                          % filterkoefficienter
 hMA_IR_S_filtreret = 1/M_S_IR_filtreret*ones(1,M_S_IR_filtreret);          % MA-filter, filterkoefficienter
 yMA_IR_S_filtreret = filter(hMA_IR_S_filtreret,1,c);      % filtrerer inputsignal for Simons del
 
-%for c = 1:N-2
-    %if (yMA_IR_S[c]>yMA_IR_S[c-1]) && (yMA_IR_S[c]<yMA_IR_S[c+1])
-        
-    %end
-%end
+puls = 0;
+
+for i = (M_S_IR_filtreret/8)-1:(N/8)
+    if (yMA_IR_S_filtreret(i*8) > yMA_IR_S_filtreret((i*8)-1)) && (yMA_IR_S_filtreret(i*8) > yMA_IR_S_filtreret((i*8)+1))
+        puls = puls + 1;
+    end
+end
 
 
 %% plotning af signal efter pålagt filter
 figure
 
-subplot(2,3,1:2)
-plot(time_S,RED_S), grid, hold on
-plot(time_S,yMA_R_S), grid, hold on
-plot(time_S,IR_S), grid, hold on
-plot(time_S,yMA_IR_S), grid, hold on
-plot(time_S,c, 'r'), grid, hold on
-plot(time_S,yMA_IR_S_filtreret, 'g');
+subplot(1,2,1:2)
+plot(n,RED_S), grid, hold on
+plot(n,yMA_R_S), grid, hold on
+plot(n,IR_S), grid, hold on
+plot(n,yMA_IR_S), grid, hold on
+plot(n,c, 'r'), grid, hold on
+plot(n,yMA_IR_S_filtreret, 'g');
 lgd = legend('original rød pære respons', 'filtreret rød pære respons', 'original IR respons', '3 koefficienters IR filter', 'højeste værdi af hvert 32 sample hertil', '280 koefficienters filter på max værdi af hvert 32 sample');
 title(lgd,'akser');
-xlim([-5 5]);
+xlim([0 N]);
 title('Simons filter respons');
-xlabel('sekunder'), ylabel('volt');
+xlabel('samples'), ylabel('volt');
