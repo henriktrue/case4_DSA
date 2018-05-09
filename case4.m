@@ -42,8 +42,8 @@ yMA_IR_S_filtreret = filter(hMA_IR_S_filtreret,1,c);      % filtrerer inputsigna
 
 puls = 0;
 p_x = [];
-for i = (M_S_IR_filtreret/8)-1:(N/8)
-    if (yMA_IR_S_filtreret(i*8) > yMA_IR_S_filtreret((i*8)-1)) && (yMA_IR_S_filtreret(i*8) > yMA_IR_S_filtreret((i*8)+1))
+for i = (M_S_IR_filtreret/8)+1:(N/8)
+    if (yMA_IR_S_filtreret(i*8) >= yMA_IR_S_filtreret((i*8)-1)) && (yMA_IR_S_filtreret(i*8) >= yMA_IR_S_filtreret((i*8)+1))
         puls = puls + 1;
         p_x = ([p_x,i*8]);
     end
